@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>val</title>
+    <style>
+        /* Gaya umum */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Halaman login dengan password */
+        .splash-screen {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            transition: opacity 1s ease-out;
+        }
+
+        .splash-screen h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .password-input {
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 250px;
+            text-align: center;
+            letter-spacing: 5px;
+        }
+
+        .submit-btn {
+            font-size: 18px;
+            padding: 10px 20px;
+            background: #ff4b5c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #e04350;
+        }
+
+        /* Halaman utama */
+        .main-content {
+            display: none;
+            text-align: center;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 20px;
+            display: inline-block;
+            color: white;
+        }
+
+        /* Menjadikan tombol "Yes" dan "No" sejajar */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Tombol */
+        .btn {
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .yes {
+            background: #ff4b5c;
+            color: white;
+        }
+
+        .no {
+            background: #333;
+            color: white;
+            position: absolute;
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Halaman Login -->
+    <div class="splash-screen" id="splashScreen">
+        <h1>Masukkan Password</h1>
+        <input type="password" id="passwordField" class="password-input" placeholder="Masukkan Password">
+        <button class="submit-btn" onclick="checkPassword()">Submit</button>
+        <p id="errorMsg" style="color: red; display: none;">Password salah! Coba lagi.</p>
+    </div>
+
+    <!-- Halaman Utama -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <h1>will you forgive me diahh? 💖</h1>
+            <div class="btn-container">
+                <button class="btn yes" onclick="showLoveMessage()">Yes</button>
+                <button class="btn no" id="noButton">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suara notifikasi MacBook -->
+    <audio id="macSound" src="ringtone.wav"></audio>
+
+    <!-- Lagu latar belakang -->
+    <audio id="bgMusic" src="hwd.mp3" loop></audio>
+
+    <script>
+        // Array gambar untuk background (11 tempat)
+        const images = [
+            "gambar1.jpg",
+            "gambar2.jpg",
+            "gambar3.jpg",
+            "gambar4.jpg",
+            "gambar5.jpg",
+            "gambar6.jpg",
+            "gambar7.jpg",
+            "gambar8.jpg",
+            "gambar9.jpg",
+            
+        ];
+        let currentImageIndex = 0;
+
+        function changeBackground() {
+            let mainContent = document.getElementById("mainContent");
+            mainContent.style.backgroundImage = `url('${images[currentImageIndex]}')`;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+        }
+
+        // Ganti gambar setiap 3 detik
+        setInterval(changeBackground, 3000);
+
+        function checkPassword() {
+            let inputPassword = document.getElementById("passwordField").value;
+            let splash = document.getElementById("splashScreen");
+            let mainContent = document.getElementById("mainContent");
+            let music = document.getElementById("bgMusic");
+            let noButton = document.getElementById("noButton");
+
+            const correctPassword = "littleponY83";
+
+            if (inputPassword === correctPassword) {
+                splash.style.opacity = "0";
+                setTimeout(() => {
+                    splash.style.display = "none";
+                    mainContent.style.display = "flex";
+                    noButton.style.display = "block"; // Menampilkan tombol "No" setelah login
+                    music.play().catch(error => {
+                        console.log("Pemutaran lagu dicegah oleh browser. Klik di mana saja untuk memulai lagu.");
+                    });
+                }, 1000);
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        }
+
+        function showLoveMessage() {
+            let sound = document.getElementById("macSound");
+            sound.play();
+            setTimeout(() => {
+                alert("yey, dimaafin! maafin aku yaa cantikk udahh bikin mu marah seharian and makasii yaa udah tetep jadi valentine aku,tanpa aku valday purpose. maaf aku selalu bikin mu marah marah cantik sabar yaa nanti cepet tua ih, I Lop U Sekebon 💕");
+            }, 500);
+        }
+
+        // Fungsi agar tombol "No" kabur saat didekati kursor
+        document.addEventListener("mousemove", function (event) {
+            let button = document.getElementById("noButton");
+            let buttonRect = button.getBoundingClientRect();
+
+            // Hitung jarak antara kursor dan tombol
+            let distanceX = Math.abs(event.clientX - (buttonRect.left + buttonRect.width / 2));
+            let distanceY = Math.abs(event.clientY - (buttonRect.top + buttonRect.height / 2));
+            let distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+
+            // Jika kursor mendekati tombol, maka tombol akan berpindah
+            if (distance < 100) {
+                let x = Math.random() * (window.innerWidth - buttonRect.width);
+                let y = Math.random() * (window.innerHeight - buttonRect.height);
+                button.style.left = x + "px";
+                button.style.top = y + "px";
+            }
+        });
+    </script>
+
+</body>
+</html>
